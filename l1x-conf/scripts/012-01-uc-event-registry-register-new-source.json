@@ -1,0 +1,11 @@
+{
+  "smart_contract_function_call": {
+    "contract_instance_address": {
+      "hex": "8c1e99b07b018473951bfe087499a0b0028af984"
+    },
+    "function": { "text": "register_new_source" },
+    "arguments": {
+      "text": "{\"flow_contract_address\": \"96b9af4b922b43951a4c8003185c03d982ccafc6\",\"source_id\": \"0\",\"chain\": \"ethereum_goerli\",\"source_type\": \"smart_contract_event\",\"smart_contract_address\": \"Da4140B906044aCFb1aF3b34C94A2803D90e96aA\",\"event_type\": \"\",\"event_filters\": [\"2034c67e4bc4e992b74d2ee2ed56444a50f9a2cfb45dc6ffaa73152049c3b648\"]}"
+    }
+  }
+}

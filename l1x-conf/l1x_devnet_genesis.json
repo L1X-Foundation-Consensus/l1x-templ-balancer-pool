@@ -1,0 +1,40 @@
+{
+  "data": {
+    "genesis_time": {
+      "secs_since_epoch": 1697017630,
+      "nanos_since_epoch": 705881013
+    },
+    "block_version": 1,
+    "block_number": 0,
+    "block_time_in_second": 10,
+    "maximum_fee": 1000000,
+    "minimum_fee": 1000,
+    "accounts": [
+      {
+        "address": "75104938baa47c54a86004ef998cc76c2e616289",
+        "balance": 1000000000000000000000000000000
+      },
+      {
+        "address": "cc3971bcd25ce4f2b394d81c7d4e6a3551f7061b",
+        "balance": 1000000000000000000000000000000
+      },
+      {
+        "address": "9e6e1487f3c7b25a36a84aadb84d96c363403f28",
+        "balance": 1000000000000000000000000000000
+      },
+      {
+        "address": "93735a5605c99c9806037dea0d8195b57dc455f9",
+        "balance": 1000000000000000000000000000000
+      },
+      {
+        "address": "79326b59a553e84189315e814e3685d20852e6d7",
+        "balance": 1000000000000000000000000000000
+      }
+    ],
+    "validators": [
+      {
+        "public_key": "0215edb7e9a64f9970c60d94b866b73686980d734874382ad1002700e5d870d945"
+      }
+    ]
+  }
+}

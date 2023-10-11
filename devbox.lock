@@ -1,0 +1,105 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "cassandra_4@4.1.2": {
+      "last_modified": "2023-09-27T18:02:17Z",
+      "resolved": "github:NixOS/nixpkgs/517501bcf14ae6ec47efd6a17dda0ca8e6d866f9#cassandra_4",
+      "source": "devbox-search",
+      "version": "4.1.2",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/5k0ckm6k7n2fb0cpczb27bnq0d8g7g0g-cassandra-4.1.2"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/zlp3nn9m7jc972nigi0lp3klzikg48yd-cassandra-4.1.2"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/gaqvzsvdg9hf5d1x49hfaxlvwgn62fqc-cassandra-4.1.2"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/vw030h3mwgahslns7pbplkzh9gv2c75c-cassandra-4.1.2"
+        }
+      }
+    },
+    "nodejs@18.14.2": {
+      "last_modified": "2023-03-16T17:26:55Z",
+      "resolved": "github:NixOS/nixpkgs/194c2aa446b2b059886bb68be15ef6736d5a8c31#nodejs",
+      "source": "devbox-search",
+      "version": "18.14.2",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/iz0q8dw0xwjfd7mjmsf6zw05b4rdd9rj-nodejs-18.14.2"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/18qz08bll4dcg6845yj1fb0vfhjxqg5a-nodejs-18.14.2"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/ckcdlrv1xqwc7ks4gvsgf00wn4bmppla-nodejs-18.14.2"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/xi85xjr9m7141z61r954z47jnpcsjq9s-nodejs-18.14.2"
+        }
+      }
+    },
+    "openssl@3.0.10": {
+      "last_modified": "2023-10-08T09:32:01Z",
+      "resolved": "github:NixOS/nixpkgs/2646b294a146df2781b1ca49092450e8a32814e1#openssl",
+      "source": "devbox-search",
+      "version": "3.0.10",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/d77n7prp6f9ydhq5j8qa1jc2ggqjzfhs-openssl-3.0.10-bin"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/6clgpsqx6blf75lqgvvcvl64fniyqmmg-openssl-3.0.10-bin"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/x675sxjvdq4nbynwkygkb2crnijcaf2w-openssl-3.0.10-bin"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/8i08qh6yrxl8cw31ari0ljx78chfk6qd-openssl-3.0.10-bin"
+        }
+      }
+    },
+    "yarn@1.22.19": {
+      "last_modified": "2023-09-27T18:02:17Z",
+      "resolved": "github:NixOS/nixpkgs/517501bcf14ae6ec47efd6a17dda0ca8e6d866f9#yarn",
+      "source": "devbox-search",
+      "version": "1.22.19",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/bgskrpwr2mhjz8iaiwffqm3yp513dp50-yarn-1.22.19"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/lvnq6659c1ll4h0zpbjp6syqm5szhjsp-yarn-1.22.19"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/1i5grwcqqxiaid655ba6a59j46p642ix-yarn-1.22.19"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/i2d711xk76lzfd817wrg76czlljq2yjv-yarn-1.22.19"
+        }
+      }
+    },
+    "yq@3.2.3": {
+      "last_modified": "2023-09-27T18:02:17Z",
+      "resolved": "github:NixOS/nixpkgs/517501bcf14ae6ec47efd6a17dda0ca8e6d866f9#yq",
+      "source": "devbox-search",
+      "version": "3.2.3",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/cw407csxr30qzzc4fxfzxz88kv9bfvq6-python3.10-yq-3.2.3"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/y5qkxaqydjy58xiad6hilvmqyrjmp61k-python3.10-yq-3.2.3"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/j0nqggn8l3fvqschpnn7wjjbk91fw58n-python3.10-yq-3.2.3"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/4y1a29s0gbi446yry50lj057w2rr4d7l-python3.10-yq-3.2.3"
+        }
+      }
+    }
+  }
+}

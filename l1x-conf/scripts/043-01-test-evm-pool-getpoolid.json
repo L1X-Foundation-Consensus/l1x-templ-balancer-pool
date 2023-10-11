@@ -1,0 +1,13 @@
+{
+  "smart_contract_function_call": {
+    "contract_instance_address": {
+      "hex": "b2ed435ddc366c5d480bd5920ddf26d532f3bafa"
+    },
+    "function": {
+      "text": ""
+    },
+    "arguments": {
+      "hex": "38fff2d0"
+    }
+  }
+}

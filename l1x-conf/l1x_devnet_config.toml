@@ -1,0 +1,15 @@
+dev_mode = true
+max_size = 100
+fee_limit = 100000
+rate_limit = 15
+time_frame_seconds = 100
+expiration_seconds = 100
+node_port = "5010"
+node_ip_address = "/ip4/0.0.0.0/tcp/5010"
+node_private_key = "6913aeae91daf21a8381b1af75272fe6fae8ec4a21110674815c8f0691e32758"
+boot_nodes = ["/ip4/192.168.1.120/tcp/5010/p2p/16Uiu2HAmTsE86DFcMsxrXA2873jv67wok5mG9zde2Us26aGWJvXH"]
+grpc_port = "http://l1x-node:50052"
+jsonrpc_port = "http://l1x-node:50051"
+cassandra_host = "cassandra1:9042"
+cassandra_username = "cassandra"
+cassandra_password = "cassandra"

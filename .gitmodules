@@ -1,0 +1,3 @@
+[submodule "l1x-eth-contracts/Balancer-v2"]
+	path = l1x-eth-contracts/Balancer-v2
+	url = git@github.com:L1X-Foundation-Consensus/Balancer-v2.git
