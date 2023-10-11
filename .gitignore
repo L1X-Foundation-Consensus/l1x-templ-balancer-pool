@@ -1,7 +1,7 @@
 target
 .devbox
 l1x-artifacts/*
-l1x-eth-artifacts/*
+l1x-evm-artifacts/*
 l1x-traces/*
 l1x-misc/*
 devbox-services-devnode.log

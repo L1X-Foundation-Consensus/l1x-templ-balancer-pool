@@ -31,15 +31,6 @@
   "shell": {
     "init_hook": ["echo Welcome to l1x-ft, Happy Coding! > /dev/null"],
     "scripts": {
-      "00_build_forge": [
-        "echo Build l1x-forge",
-        "cd ./l1x-misc/l1x-cargo-sde-tools && cargo build --release && cp ./target/release/l1x-forge ../install-bin"
-      ],
-      "00_copy_forge_binary": [
-        "devbox run 00_build_forge",
-        "echo Copy l1x-forge to l1x-misc/install-bin",
-        "cp ./l1x-misc/l1x-cargo-sde-tools/target/release/l1x-forge ./l1x-misc/install-bin"
-      ],
       "01_init_setup": [
         "echo Initializing Setup",
         "if [ ! -d $L1X_CFG_ARTIFACTS ]; then mkdir $L1X_CFG_ARTIFACTS; fi",
@@ -48,8 +39,9 @@
         "if [ ! -d $L1X_CFG_CASSANDRA1_DATA ]; then mkdir $L1X_CFG_CASSANDRA1_DATA; fi",
         "if [ ! -d $L1X_CFG_CASSANDRA2_DATA ]; then mkdir $L1X_CFG_CASSANDRA2_DATA; fi",
         "if [ ! -d $L1X_CFG_EVM_ARTIFACTS ]; then mkdir $L1X_CFG_EVM_ARTIFACTS; fi",
-        "git submodule update --init --recursive",
-        "cd $L1X_CFG_WS_HOME/l1x-eth-contracts/Balancer-v2 && yarn install && yarn build",
+        "cd $L1X_CFG_WS_HOME/l1x-eth-contracts/Balancer-v2 && yarn install && yarn build"
+      ],
+      "01_start_hardhat": [
         "cd $L1X_CFG_WS_HOME/l1x-eth-contracts/Balancer-v2/pkg/pool-stable && npx hardhat node"
       ],
       "01_teardown_setup": [
@@ -278,22 +270,22 @@
       "60_install_forge_ebpf_cmd_force_deploy": [
         "echo ebpf contract deploy and Init - Args",
         "echo :: $1, $2, $3",
-        "RUST_LOG=info ./l1x-misc/install-bin/l1x-forge vm-install-contract --vm-type ebpf --force --artifact-id $1 --contract-id $2 --owner $3"
+        "RUST_LOG=info l1x-forge vm-install-contract --vm-type ebpf --force --artifact-id $1 --contract-id $2 --owner $3"
       ],
       "61_install_forge_ebpf_cmd_reuse_deploy": [
         "echo ebpf contract Init - Args ::",
         "echo    - $1, $2, $3",
-        "RUST_LOG=info ./l1x-misc/install-bin/l1x-forge vm-install-contract --vm-type ebpf --artifact-id $1 --contract-id $2 --owner $3"
+        "RUST_LOG=info l1x-forge vm-install-contract --vm-type ebpf --artifact-id $1 --contract-id $2 --owner $3"
       ],
       "62_install_forge_evm_cmd_force_deploy": [
         "echo evm contract deploy and Init - Args",
         "echo :: $1, $2, $3, $4",
-        "RUST_LOG=info ./l1x-misc/install-bin/l1x-forge vm-install-contract --vm-type evm --force --artifact-id $1 --contract-id $2 --owner $3 --salt $4"
+        "RUST_LOG=info l1x-forge vm-install-contract --vm-type evm --force --artifact-id $1 --contract-id $2 --owner $3 --salt $4"
       ],
       "63_install_forge_evm_cmd_reuse_deploy": [
         "echo evm contract Init - Args ::",
         "echo    - $1, $2, $3",
-        "RUST_LOG=info ./l1x-misc/install-bin/l1x-forge vm-install-contract --vm-type evm --artifact-id $1 --contract-id $2 --owner $3"
+        "RUST_LOG=info l1x-forge vm-install-contract --vm-type evm --artifact-id $1 --contract-id $2 --owner $3"
       ],
       "80_01_install_forge_ebpf_xflow1": [
         "echo Install xflow1",
@@ -305,60 +297,74 @@
       ],
       "81_01_install_forge_evm_erc20": [
         "echo '**** 📦 Installing erc20 Contracts for L1X EVM 📦  ****'",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationCode20.txt erc20 super 000000000000000000000000000100",
-        "echo '📦   **************************************************************** 📦 '"
-      ],
-      "81_01_install_forge_evm_erc20_rg1": [
-        "echo '**** 📦 Installing erc20 Contracts for L1X EVM 📦  ****'",
-        "RAND_INT=$(openssl rand -hex 16)",
-        "SALT=$(printf \"%032d\" \"$RAND_INT\")",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationCode20.txt erc20 super $SALT",
-        "echo '📦   **************************************************************** 📦 '"
-      ],
-      "81_01_install_forge_evm_erc20_rg2": [
-        "echo '**** 📦 Installing erc20 Contracts for L1X EVM 📦  ****'",
-        "SALT=$(openssl rand -hex 16)",
+        "RAND_INT=$(openssl rand --hex 4)",
+        "echo RAND_INT :: $RAND_INT",
+        "SALT=$(printf \"%030d\" \"0x$RAND_INT\")",
         "devbox run 62_install_forge_evm_cmd_force_deploy creationCode20.txt erc20 super $SALT",
         "echo '📦   **************************************************************** 📦 '"
       ],
       "81_02_install_forge_evm_erc201": [
         "echo '**** 📦 Installing erc201 Contracts for L1X EVM 📦  ****'",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationCode202.txt erc201 super 000000000000000000000000000002",
+        "RAND_INT=$(openssl rand --hex 4)",
+        "echo RAND_INT :: $RAND_INT",
+        "SALT=$(printf \"%030d\" \"0x$RAND_INT\")",
+        "devbox run 62_install_forge_evm_cmd_force_deploy creationCode202.txt erc201 super $SALT",
         "echo '📦   **************************************************************** 📦 '"
       ],
       "81_03_install_forge_evm_weth": [
         "echo '**** 📦 Installing weth Contracts for L1X EVM 📦  ****'",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationWeth.txt weth super 000000000000000000000000000003",
+        "RAND_INT=$(openssl rand --hex 4)",
+        "echo RAND_INT :: $RAND_INT",
+        "SALT=$(printf \"%030d\" \"0x$RAND_INT\")",
+        "devbox run 62_install_forge_evm_cmd_force_deploy creationWeth.txt weth super $SALT",
         "echo '📦   **************************************************************** 📦 '"
       ],
       "81_04_install_forge_evm_rateprovider": [
         "echo '**** 📦 Installing rateprovider Contracts for L1X EVM 📦  ****'",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationRateProvider.txt rateprovider super 000000000000000000000000000004",
+        "RAND_INT=$(openssl rand --hex 4)",
+        "echo RAND_INT :: $RAND_INT",
+        "SALT=$(printf \"%030d\" \"0x$RAND_INT\")",
+        "devbox run 62_install_forge_evm_cmd_force_deploy creationRateProvider.txt rateprovider super $SALT",
         "echo '📦   **************************************************************** 📦 '"
       ],
       "81_05_install_forge_evm_rateprovider1": [
         "echo '**** 📦 Installing rateprovider1 Contracts for L1X EVM 📦  ****'",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationRateProvider2.txt rateprovider1 super 000000000000000000000000000005",
+        "RAND_INT=$(openssl rand --hex 4)",
+        "echo RAND_INT :: $RAND_INT",
+        "SALT=$(printf \"%030d\" \"0x$RAND_INT\")",
+        "devbox run 62_install_forge_evm_cmd_force_deploy creationRateProvider2.txt rateprovider1 super $SALT",
         "echo '📦   **************************************************************** 📦 '"
       ],
       "81_06_install_forge_evm_authorizer": [
         "echo '**** 📦 Installing authorizer Contracts for L1X EVM 📦  ****'",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationAuthorizer.txt authorizer super 000000000000000000000000000006",
+        "RAND_INT=$(openssl rand --hex 4)",
+        "echo RAND_INT :: $RAND_INT",
+        "SALT=$(printf \"%030d\" \"0x$RAND_INT\")",
+        "devbox run 62_install_forge_evm_cmd_force_deploy creationAuthorizer.txt authorizer super $SALT",
         "echo '📦   **************************************************************** 📦 '"
       ],
       "81_07_install_forge_evm_vault": [
         "echo '**** 📦 Installing vault Contracts for L1X EVM 📦  ****'",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationVault.txt vault super 000000000000000000000000000007",
+        "RAND_INT=$(openssl rand --hex 4)",
+        "echo RAND_INT :: $RAND_INT",
+        "SALT=$(printf \"%030d\" \"0x$RAND_INT\")",
+        "devbox run 62_install_forge_evm_cmd_force_deploy creationVault.txt vault super $SALT",
         "echo '📦   **************************************************************** 📦 '"
       ],
       "81_08_install_forge_evm_protocolfee": [
         "echo '**** 📦 Installing protocolfee Contracts for L1X EVM 📦  ****'",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationProtocolFee.txt protocolfee super 000000000000000000000000000200",
+        "RAND_INT=$(openssl rand --hex 4)",
+        "echo RAND_INT :: $RAND_INT",
+        "SALT=$(printf \"%030d\" \"0x$RAND_INT\")",
+        "devbox run 62_install_forge_evm_cmd_force_deploy creationProtocolFee.txt protocolfee super $SALT",
         "echo '📦   **************************************************************** 📦 '"
       ],
       "81_09_install_forge_evm_pool": [
         "echo '**** 📦 Installing pool Contracts for L1X EVM 📦  ****'",
-        "devbox run 62_install_forge_evm_cmd_force_deploy creationCodePool.txt pool super 000000000000000000000000000100",
+        "RAND_INT=$(openssl rand --hex 4)",
+        "echo RAND_INT :: $RAND_INT",
+        "SALT=$(printf \"%030d\" \"0x$RAND_INT\")",
+        "devbox run 62_install_forge_evm_cmd_force_deploy creationCodePool.txt pool super $SALT",
         "echo '📦   **************************************************************** 📦 '"
       ],
       "82_01_install_forge_evm_bpool": [
