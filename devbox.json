@@ -24,7 +24,6 @@
     "L1X_CFG_EVENT_LISTENER_REGULAR2_PORT": "8003",
     "L1X_CFG_EVM_ARTIFACTS": "$PWD/l1x-evm-artifacts",
     "L1X_CFG_TOOLS": "l1x-toolkit-lite-test:0.1.2",
-    "L1X_CFG_EXT_TOOL_FOUNDRY": "ghcr.io/foundry-rs/foundry:latest",
     "L1X_CFG_TRACES": "$PWD/l1x-traces",
     "L1X_CFG_WS_HOME": "$PWD"
   },
@@ -74,49 +73,6 @@
         "$L1X_CFG_DC_CMD_INTF -f $L1X_CFG_DC_FILE down cassandra1",
         "echo 'Stop L1X devnode services... Done!!!'"
       ],
-      "03_01_start_monitor_services_leader": [
-        "echo 'Start L1X Offchain Monitor Services...'",
-        "devbox run 03_start_monitor_services_cmd l1x-event-listener-leader"
-      ],
-      "03_02_start_monitor_services_regular1": [
-        "echo 'Start L1X Offchain Monitor Services...'",
-        "devbox run 03_start_monitor_services_cmd l1x-event-listener-regular1"
-      ],
-      "03_03_start_monitor_services_regular2": [
-        "echo 'Start L1X Offchain Monitor Services...'",
-        "devbox run 03_start_monitor_services_cmd l1x-event-listener-regular2"
-      ],
-      "03_start_monitor_services_cmd": [
-        "echo 'Start L1X Offchain Monitor Service $1 ...'",
-        "log_trace_file=$L1X_CFG_TRACES/$1-$(date '+%d-%m-%y-%H%M').txt",
-        "$L1X_CFG_DC_CMD_INTF -f $L1X_CFG_DC_FILE run --rm -e INTF_ARG_REGISTRY_CONTRACT_ADDRESS=8c1e99b07b018473951bfe087499a0b0028af984 $1 2>&1 | tee $log_trace_file"
-      ],
-      "03_stop_monitor_services": [
-        "echo 'Stop L1X Offchain Monitor Services...'",
-        "docker stop $(docker ps -a | grep 'l1x-event-listener' | awk '{print $1}')",
-        "docker stop $(docker ps -a | grep 'l1x-node-signer' | awk '{print $1}')",
-        "echo 'Stop Offchain Monitor Services... Done!!!'"
-      ],
-      "04_01_start_monitor_signer_node": [
-        "echo 'Start L1X Offchain Monitor Signer Node Service ...'",
-        "log_trace_file=$L1X_CFG_TRACES/l1x-node-signer-$(date '+%d-%m-%y-%H%M').txt",
-        "$L1X_CFG_DC_CMD_INTF -f $L1X_CFG_DC_FILE run --rm l1x-node-signer 2>&1 | tee $log_trace_file"
-      ],
-      "10_01_compile_ebpf": [
-        "echo 10_compile_l1x :: Compiling Contract $L1X_CFG_CONTRACT1 ...",
-        "devbox run 01_init_setup",
-        "devbox run 10_compile_ebpf_cmd $L1X_CFG_CONTRACT1",
-        "echo Compiling Contract $L1X_CFG_CONTRACT2 ...",
-        "devbox run 10_compile_ebpf_cmd $L1X_CFG_CONTRACT2"
-      ],
-      "10_compile_ebpf_cmd": [
-        "echo 10_compile_ebpf_cmd :: Compiling Contract $1 ...",
-        "devbox run 01_init_setup",
-        "./l1x-contracts/$1/build.sh",
-        "cp target/wasm32-unknown-unknown/release/$1.wasm $L1X_CFG_ARTIFACTS/.",
-        "$L1X_CFG_DC_CMD_INTF -f $L1X_CFG_DC_FILE run --rm -e INTF_ARG_CONTRACT=$1 l1x-tools-intf-gen-ir",
-        "$L1X_CFG_DC_CMD_INTF -f $L1X_CFG_DC_FILE run --rm -e INTF_ARG_CONTRACT=$1 l1x-tools-intf-gen-bpf"
-      ],
       "11_clean_logs": [
         "rm -Rf ./devbox-services.log",
         "rm -Rf $L1X_CFG_TRACES/*.*",
@@ -126,18 +82,6 @@
         "echo Cleaning the workspace artifacts ...",
         "cargo clean",
         "rm -Rf $L1X_CFG_ARTIFACTS/*.*"
-      ],
-      "13_ro_l1x_contract_read_only_call_cmd": [
-        "echo Init Contract $1",
-        "$L1X_CFG_DC_CMD_INTF -f $L1X_CFG_DC_FILE run --rm -e INTF_ARG_OWNER=super -e INTF_ARG_PAYLOAD=$1 l1x-tools-intf-read-only-func-call"
-      ],
-      "18_ro_l1x_contract_registry_get_sources_from": [
-        "echo event-registry call register_new_source",
-        "devbox run 13_ro_l1x_contract_read_only_call_cmd 012-02-uc-event-registry-get-source-from.json"
-      ],
-      "18_trans_register_source": [
-        "echo event-registry call register_new_source",
-        "devbox run 41_init_cli_ebpf_cmd 012-01-uc-event-registry-register-new-source.json"
       ],
       "20_01_compile_evm_erc20": [
         "echo '**** 🔨 Compiling erc20 Contracts for L1X EVM 🔨 ****'",
@@ -200,52 +144,6 @@
         "cp ./creationCode/$2 $L1X_CFG_EVM_ARTIFACTS/.",
         "echo '🔧 **************************************************************** 🔧'"
       ],
-      "21_install_evm_bpool_all": [
-        "devbox run 20_01_compile_evm_erc20",
-        "devbox run 20_02_compile_evm_erc201",
-        "devbox run 20_03_compile_evm_weth",
-        "devbox run 20_04_compile_evm_rateprovider",
-        "devbox run 20_05_compile_evm_rateProvider1",
-        "devbox run 20_06_compile_evm_authorizer",
-        "devbox run 20_07_compile_evm_vault",
-        "devbox run 20_08_compile_evm_protocolfee",
-        "devbox run 20_09_compile_evm_pool"
-      ],
-      "22_test_evm_bpool_uc1": [
-        "devbox run 20_01_compile_evm_erc20",
-        "devbox run 20_02_compile_evm_erc201",
-        "devbox run 81_01_install_forge_evm_erc20",
-        "erc20_address=$(l1x-conf/get_contract_address.sh l1x_evm creationCode20.txt deploy_address)",
-        "echo $erc20_address",
-        "cfg_erc20_address=$(RUST_LOG=info cargo run -p l1x-bpool-conf -- get erc201)",
-        "echo $cfg_erc20_address",
-        "RUST_LOG=info cargo run -p l1x-bpool-conf -- set erc201 $erc20_address",
-        "RUST_LOG=info cargo run -p l1x-bpool-conf -- get erc201"
-      ],
-      "30_chk_balance_super": [
-        "echo chk_balance_super",
-        "docker-compose -f $L1X_CFG_DC_FILE run --rm -e INTF_ARG_OWNER=super l1x-tools-get-account-state"
-      ],
-      "40_deploy_cli_ebpf": [
-        "echo Deploying Contract $L1X_CFG_CONTRACT1 , $L1X_CFG_CONTRACT2",
-        "devbox run 40_deploy_cli_ebpf_cmd 010-01-uc-deploy-xtalk-flow-control.json",
-        "sleep 10",
-        "devbox run 40_deploy_cli_ebpf_cmd 010-02-uc-deploy-source-registry.json"
-      ],
-      "40_deploy_cli_ebpf_cmd": [
-        "echo Deploying Contract $1",
-        "$L1X_CFG_DC_CMD_INTF -f $L1X_CFG_DC_FILE run --rm -e INTF_ARG_OWNER=super -e INTF_ARG_PAYLOAD=$1 l1x-tools-intf-sub-txn"
-      ],
-      "41_init_cli_ebpf": [
-        "echo Init Contract $L1X_CFG_CONTRACT1 $L1X_CFG_CONTRACT2",
-        "devbox run 41_init_cli_ebpf_cmd 011-01-uc-init-xtalk-flow-control.json",
-        "sleep 10",
-        "devbox run 41_init_cli_ebpf_cmd 011-02-uc-init-source-registry.json"
-      ],
-      "41_init_cli_ebpf_cmd": [
-        "echo Init Contract $1",
-        "$L1X_CFG_DC_CMD_INTF -f $L1X_CFG_DC_FILE run --rm -e INTF_ARG_OWNER=super -e INTF_ARG_PAYLOAD=$1 l1x-tools-intf-sub-txn"
-      ],
       "42_deploy_cli_evm_bpool": [
         "echo Deploying Bpool to L1X EVM",
         "devbox run 42_deploy_cli_evm_cmd 040-01-deploy-evm-creationCode20.json"
@@ -267,16 +165,6 @@
         "echo Test get Pool ID",
         "devbox run 42_init_cli_evm_cmd 043-01-test-evm-pool-getpoolid.json"
       ],
-      "60_install_forge_ebpf_cmd_force_deploy": [
-        "echo ebpf contract deploy and Init - Args",
-        "echo :: $1, $2, $3",
-        "RUST_LOG=info l1x-forge vm-install-contract --vm-type ebpf --force --artifact-id $1 --contract-id $2 --owner $3"
-      ],
-      "61_install_forge_ebpf_cmd_reuse_deploy": [
-        "echo ebpf contract Init - Args ::",
-        "echo    - $1, $2, $3",
-        "RUST_LOG=info l1x-forge vm-install-contract --vm-type ebpf --artifact-id $1 --contract-id $2 --owner $3"
-      ],
       "62_install_forge_evm_cmd_force_deploy": [
         "echo evm contract deploy and Init - Args",
         "echo :: $1, $2, $3, $4",
@@ -286,14 +174,6 @@
         "echo evm contract Init - Args ::",
         "echo    - $1, $2, $3",
         "RUST_LOG=info l1x-forge vm-install-contract --vm-type evm --artifact-id $1 --contract-id $2 --owner $3"
-      ],
-      "80_01_install_forge_ebpf_xflow1": [
-        "echo Install xflow1",
-        "devbox run 60_install_forge_ebpf_cmd_force_deploy xtalk_flow_control.o XTALK_FLOW_CONTROL1 super"
-      ],
-      "80_02_install_forge_ebpf_xflow2": [
-        "echo Install xflow2",
-        "devbox run 60_forge_ebpf_install_cmd_reuse_deploy xtalk_flow_control.o XTALK_FLOW_CONTROL2 super"
       ],
       "81_01_install_forge_evm_erc20": [
         "echo '**** 📦 Installing erc20 Contracts for L1X EVM 📦  ****'",
@@ -421,17 +301,6 @@
         "devbox run 81_09_install_forge_evm_pool",
         "echo Pool Address :: $(l1x-conf/get_contract_address.sh l1x_evm creationCodePool.txt deploy_address)",
         "echo '📦 **************************************************************** 📦'"
-      ],
-      "83_01_init_evm_bpool": [
-        "echo '**** 📦 init bpool contracts 📦****'",
-        "cargo run --release -p l1x-pool-utility -- init-stable-pool --owner super",
-        "echo '📦   **************************************************************** 📦 '"
-      ],
-      "90_01_abi_decode": [
-        "echo '**** 📦 abi decode 📦****'",
-        "CAST_ARG=$(echo \" cast abi-decode $1 \")",
-        "docker run --rm $L1X_CFG_EXT_TOOL_FOUNDRY \" $CAST_ARG \"",
-        "echo '📦   **************************************************************** 📦 '"
       ]
     }
   }

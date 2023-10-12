@@ -12,7 +12,6 @@ services:
       - CASSANDRA_LISTEN_ADDRESS=cassandra1
     volumes:
       - $L1X_CFG_CASSANDRA1_DATA:/var/lib/cassandra
-      - ./l1x-conf/cassandra-env.sh:/etc/cassandra/cassandra-env.sh
     networks:
       - l1x-devnet-network
     healthcheck:
