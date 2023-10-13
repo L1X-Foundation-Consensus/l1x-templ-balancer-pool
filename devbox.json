@@ -4,28 +4,24 @@
     "nodejs@18.14.2",
     "yarn@1.22.19",
     "yq@3.2.3",
-    "openssl@3.0.10"
+    "openssl@3.0.10",
+    "docker-compose@2.21.0"
   ],
   "env": {
+    "L1X_CFG_TOOLS": "kevincoutinho007/l1x-toolkit:0.8.9",
+    "L1X_CFG_CHAIN_TYPE": "local_devnet",
+    "L1X_CFG_WS_HOME": "$PWD",
+    "L1X_CFG_DRT_ARTIFACTS": "/home/l1x/l1x-ws/l1x-artifacts",
+    "L1X_CFG_EVM_ARTIFACTS": "$PWD/l1x-evm-artifacts",
+    "L1X_CFG_TRACES": "$PWD/l1x-traces",
     "L1X_CFG_ARTIFACTS": "$PWD/l1x-artifacts",
+    "L1X_CFG_CLI_SCRIPTS": "$PWD/l1x-conf/scripts",
+    "L1X_CFG_DC_CMD_INTF": "docker-compose",
+    "L1X_CFG_DC_FILE": "$PWD/devnet-services-dc.yml",
     "L1X_CFG_CASSANDRA1_DATA": "$PWD/l1x-conf/cassandra1_data",
     "L1X_CFG_CASSANDRA2_DATA": "$PWD/l1x-conf/cassandra2_data",
     "L1X_CFG_CASSANDRA_HOST": "127.0.0.1",
-    "L1X_CFG_CASSANDRA_PORT": "9042",
-    "L1X_CFG_CHAIN_TYPE": "local_devnet",
-    "L1X_CFG_CLI_SCRIPTS": "$PWD/l1x-conf/scripts",
-    "L1X_CFG_CONTRACT1": "source_registry",
-    "L1X_CFG_CONTRACT2": "xtalk_flow_control",
-    "L1X_CFG_DC_CMD_INTF": "docker-compose",
-    "L1X_CFG_DC_FILE": "./devnet-services-dc.yml",
-    "L1X_CFG_DRT_ARTIFACTS": "/home/l1x/l1x-ws/l1x-artifacts",
-    "L1X_CFG_EVENT_LISTENER_LEADER_PORT": "8001",
-    "L1X_CFG_EVENT_LISTENER_REGULAR1_PORT": "8002",
-    "L1X_CFG_EVENT_LISTENER_REGULAR2_PORT": "8003",
-    "L1X_CFG_EVM_ARTIFACTS": "$PWD/l1x-evm-artifacts",
-    "L1X_CFG_TOOLS": "l1x-toolkit-lite-test:0.1.2",
-    "L1X_CFG_TRACES": "$PWD/l1x-traces",
-    "L1X_CFG_WS_HOME": "$PWD"
+    "L1X_CFG_CASSANDRA_PORT": "9042"
   },
   "shell": {
     "init_hook": ["echo Welcome to l1x-ft, Happy Coding! > /dev/null"],
@@ -161,9 +157,42 @@
         "echo Deploying Contract $1",
         "$L1X_CFG_DC_CMD_INTF -f $L1X_CFG_DC_FILE run --rm -e INTF_ARG_OWNER=super -e INTF_ARG_PAYLOAD=$1 l1x-tools-intf-sub-txn"
       ],
-      "43_test_cli_evm_getpoolid": [
+      "43_01_test_cli_evm_getpoolid": [
         "echo Test get Pool ID",
         "devbox run 42_init_cli_evm_cmd 043-01-test-evm-pool-getpoolid.json"
+      ],
+      "43_02_gettokenlist_calldata": [
+        "echo Test get Pool ID",
+        "cd ./l1x-eth-contracts/Balancer-v2/pkg/pool-stable && npx hardhat run ./deploy/tokenList.ts --network localhost"
+      ],
+      "43_03_test_cli_evm_gettokenlist": [
+        "echo Test get Pool ID",
+        "devbox run 42_init_cli_evm_cmd 043-02-test-evm-pool-gettokenlist.json"
+      ],
+      "43_04_approve_tokens_calldata": [
+        "echo Test get Pool ID",
+        "cd ./l1x-eth-contracts/Balancer-v2/pkg/pool-stable && npx hardhat run ./deploy/approve.ts --network localhost"
+      ],
+      "43_05_test_cli_evm_approve_tokens": [
+        "echo Test get Pool ID",
+        "devbox run 42_init_cli_evm_cmd 043-03-test-evm-approve-erc20.json",
+        "devbox run 42_init_cli_evm_cmd 043-04-test-evm-approve-erc201.json"
+      ],
+      "43_06_init_pool_calldata": [
+        "echo Test get Pool ID",
+        "cd ./l1x-eth-contracts/Balancer-v2/pkg/pool-stable && npx hardhat run ./deploy/initPool.ts --network localhost"
+      ],
+      "43_07_test_cli_evm_init_pool": [
+        "echo Test get Pool ID",
+        "devbox run 42_init_cli_evm_cmd 043-05-test-evm-init-pool.json"
+      ],
+      "43_08_join_pool_calldata": [
+        "echo Test get Pool ID",
+        "cd ./l1x-eth-contracts/Balancer-v2/pkg/pool-stable && npx hardhat run ./deploy/joinPool.ts --network localhost"
+      ],
+      "43_09_test_cli_evm_join_pool": [
+        "echo Test get Pool ID",
+        "devbox run 42_init_cli_evm_cmd 043-06-test-evm-join-pool.json"
       ],
       "62_install_forge_evm_cmd_force_deploy": [
         "echo evm contract deploy and Init - Args",

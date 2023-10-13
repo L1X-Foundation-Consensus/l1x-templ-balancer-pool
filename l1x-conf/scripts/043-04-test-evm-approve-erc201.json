@@ -1,13 +1,13 @@
 {
   "smart_contract_function_call": {
     "contract_instance_address": {
-      "hex": "00a9e780c63672f734843f67ee1dc9e3c8bdc011"
+      "hex": "25c77f9c598ecc4bc3eaeb58188c07d80605a9ea"
     },
     "function": {
       "text": ""
     },
     "arguments": {
-      "hex": "095ea7b3000000000000000000000000e8d0ef230a2ce983ccf3efe5d2c85c52d758e4480000000000000000000000000000000000000000204fce5e3e25026110000000"
+      "hex": "095ea7b300000000000000000000000000578931a9d5b5ca359c5b9bcd0a4efb6cef1a7d00000000000000000000000000000000000000000052b7d2dcc80cd2e4000000"
     }
   }
 }
